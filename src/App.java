@@ -3,12 +3,18 @@ import processing.core.*;
 public class App extends PApplet{
 
 
-        grid[][] gridArray;
-        int rows = 20; //later turn to user imput
+        cell[][] gridArray;
+
+        int rows = 20; //later turn to user input
         int cols = 10; //later turn to user input
 
+        boolean downKeyPressed;
+        boolean rightKeyPressed;
+        boolean leftKeyPressed;
+        boolean blockOnBottom;
 
-        public static void main(String[] args)  {
+
+    public static void main(String[] args)  {
         PApplet.main("App");
     }
 
@@ -20,24 +26,18 @@ public class App extends PApplet{
     public void setup(){
         background(255);
 
-
-        //implement a loop with a grid maker 
-        //have a predeterimned 2d array for arrangement
-        gridArray=new grid[rows][cols];
-        int sizeOfBox = determineSize(rows, cols);
-        int xOffset = (width-cols*sizeOfBox)/2;
+        gridArray=new cell[rows][cols];
+        int cellSize = determineSize(rows, cols);
+        int cellXposOffset = (width-cols*cellSize)/2;
         for(int i = 0; i<gridArray.length; i++){
             for(int j = 0; j<gridArray[i].length; j++){
-                int x=sizeOfBox*j+xOffset;
-                int y=sizeOfBox*i;
-                gridArray[i][j]=new grid(sizeOfBox,x,y,this);
+                int x=cellSize*j+cellXposOffset;
+                int y=cellSize*i;
+                gridArray[i][j]=new cell(cellSize,x,y,this); //adding all the cells to the 2d array
             }
         }
-
         
     }
-
-    
 
     public void draw(){
         drawGrid();
@@ -51,11 +51,19 @@ public class App extends PApplet{
     }
 
     public void drawGrid(){
-        for(grid[] row: gridArray){ //chat gpt(becuase i did not know how to use a foreach loop for a 2d array) but I understand what it is doing
-            for(grid g: row){
-                g.displayGrid();
+        for(cell[] row: gridArray){ //chat gpt(becuase i did not know how to use a foreach loop for a 2d array) but I understand what it is doing
+            for(cell c: row){
+                c.displayGrid();
             }
-            
+        }
+    }
+
+    public void keyPressed(){
+        if(key==DOWN){
+            downKeyPressed=true;
         }
     }
 }
+
+
+
