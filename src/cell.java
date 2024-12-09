@@ -1,20 +1,20 @@
 import processing.core.PApplet;
 
-public class cell {
+public class Cell {
     private int size;
     private PApplet canvas;
     private int x;
     private int y;
     private int color;
-    private boolean filled;
+    public boolean filled;
 
-    public cell(int sze, int xpos, int ypos, boolean filled, PApplet c){
+    public Cell(int sze, int xpos, int ypos, PApplet c){
         size=sze;
         canvas=c;
         x=xpos;
         y=ypos;
         color=canvas.color(0,0,0);
-        this.filled=filled;
+        filled=false;
     }
 
     public void displayCell(){
@@ -25,18 +25,21 @@ public class cell {
     }
 
     public void updateCell(){
-
-
-
-    }
-
-    public void fillCell(){
         if(filled){
             color=canvas.color(255,0,0);
         }else{
             color=canvas.color(0,0,0);
+
         }
-        
+
+    }
+
+    public void fill(){
+        filled=true;
+    }
+
+    public void unFill(){
+        filled=false;
     }
 
 

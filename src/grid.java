@@ -1,27 +1,30 @@
+import java.util.ArrayList;
+
 import processing.core.PApplet;
 
-public class grid {
+public class Grid {
     private int rows;
     private int cols;
-    private cell[][] gridArray;
+    private Cell[][] gridArray;
     private PApplet canvas;
 
-    public grid(int r, int co, PApplet c ){
+    public Grid(int r, int co, PApplet c , ArrayList<Block> blocks){
         rows=r;
         cols=co;
         canvas=c;
     }
 
 
-    public void makeGrid(){
-        gridArray=new cell[rows][cols];
+    public void createGrid(){
+        gridArray=new Cell[rows][cols];
         int cellSize = determineSize(rows, cols);
         int cellXposOffset = (canvas.width-cols*cellSize)/2;
         for(int i = 0; i<gridArray.length; i++){
             for(int j = 0; j<gridArray[i].length; j++){
                 int x=cellSize*j+cellXposOffset;
                 int y=cellSize*i;
-                gridArray[i][j]=new cell(cellSize,x,y,true,canvas); //adding all the cells to the grid
+                //gridArray[i][j]=new cell(cellSize,x,y,false,canvas); //adding all the cells to the grid
+                gridArray[i][j]=new Cell(cellSize,x,y,canvas);
             }
         }
 
@@ -29,10 +32,10 @@ public class grid {
     }
 
     public void drawGrid(){
-        for(cell[] row: gridArray){ //chat gpt(becuase i did not know how to use a foreach loop for a 2d array) but I understand what it is doing now
-            for(cell c: row){
+        for(Cell[] row: gridArray){
+            for(Cell c: row){
+                c.updateCell();
                 c.displayCell();
-                c.fillCell();
             }
         }
     }
@@ -40,6 +43,10 @@ public class grid {
     public int determineSize(int row, int col){
         int widthAndHeight = canvas.height/row;
         return widthAndHeight;
+    }
+
+    public Cell[][] getGrid(){
+        return gridArray;
     }
     
 }

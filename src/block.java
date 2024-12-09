@@ -1,58 +1,56 @@
 import processing.core.PApplet;
 
-public class block {
+public class Block {
 
     private int currentRow;
     private float currentCol;
     private PApplet canvas;
+    private Cell[][] gridArray;
+    private int frameCounter=0;
+    private int previousRow;
    
 
-    public block(int rows, float cols, PApplet c){
+    public Block(int rows, float cols, Cell[][] ga, PApplet c){
         currentRow=0;
-        currentCol=canvas.random(cols-1);
         canvas=c;
+        currentCol=(int)canvas.random(cols);
+        gridArray=ga;
+
+
     }
 
-    public boolean displayBlock(){
-        cell()
+    
+
+    public void display() {
+        gridArray[currentRow][(int)currentCol].fill();
+        gridArray[previousRow][(int)currentCol].unFill();
+    }
+
+
+    public void autoMove(){
+        frameCounter++;
+        if(frameCounter%45==0){
+            previousRow=currentRow;
+            currentRow++;
+        }
+
+    }
+
+
+
+   
+
+    public static void moveLeft() {
         
     }
 
-
-
-
-
-
-
-
+    public static void moveRight() {
+        
+    }
 
     public static void moveDown() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'moveDown'");
+       
     }
 
-    public static void moveLeft() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'moveLeft'");
-    }
-
-    public static void moveRight() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'moveRight'");
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
+   
 }

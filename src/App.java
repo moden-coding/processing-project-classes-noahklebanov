@@ -1,13 +1,14 @@
 import processing.core.*;
+import java.util.ArrayList;
+
 
 public class App extends PApplet{
 
-
-        cell[][] gridArray;
-
         int rows = 20; //later turn to user input
         int cols = 10; //later turn to user input
-        grid mainGrid = new grid(rows, cols, this);
+        Block testBlock;
+        ArrayList<Block> blocks;
+        Grid mainGrid=new Grid(rows,cols, this, blocks);
         
         
 
@@ -21,29 +22,38 @@ public class App extends PApplet{
     }
 
     public void setup(){
+        blocks = new ArrayList<>();
         background(200);
-        mainGrid.makeGrid();
-        
+        mainGrid.createGrid();
+        testBlock=new Block(rows,cols, mainGrid.getGrid(), this);
+    
     }
 
     public void draw(){
+        background(200);
         mainGrid.drawGrid();
+        testBlock.display();
+        testBlock.autoMove();
+        
 
     }
 
-
     public void keyPressed(){
         if(key==DOWN){
-            block.moveDown();
+            testBlock.moveDown();
     
         }
         if(key==RIGHT){
-            block.moveRight();
+            testBlock.moveRight();
     
         }
         if(key==LEFT){
-            block.moveLeft();
+            testBlock.moveLeft();
     
+        }
+
+        if(key==' '){
+            
         }
     }
 }
