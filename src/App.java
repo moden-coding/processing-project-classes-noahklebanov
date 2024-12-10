@@ -7,6 +7,7 @@ public class App extends PApplet{
         int rows = 20; //later turn to user input
         int cols = 10; //later turn to user input
         Block testBlock;
+        Block testBlock1;
         ArrayList<Block> blocks;
         Grid mainGrid=new Grid(rows,cols, this, blocks);
         
@@ -25,15 +26,25 @@ public class App extends PApplet{
         blocks = new ArrayList<>();
         background(200);
         mainGrid.createGrid();
-        testBlock=new Block(rows,cols, mainGrid.getGrid(), this);
+        for(int i = 0; i < 7; i++) {
+            Block block = new Block(rows,cols,mainGrid.getGrid(),mainGrid,this);
+            blocks.add(block);
+        }
+
     
     }
 
     public void draw(){
         background(200);
         mainGrid.drawGrid();
-        testBlock.display();
-        testBlock.autoMove();
+        for(Block b : blocks) {
+            b.displayBlock();
+            b.moveBlock();
+        }
+        // testBlock.display();
+        // testBlock1.display();
+        // testBlock.autoMove();
+        // testBlock1.autoMove();
         
 
     }

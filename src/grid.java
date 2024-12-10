@@ -23,7 +23,6 @@ public class Grid {
             for(int j = 0; j<gridArray[i].length; j++){
                 int x=cellSize*j+cellXposOffset;
                 int y=cellSize*i;
-                //gridArray[i][j]=new cell(cellSize,x,y,false,canvas); //adding all the cells to the grid
                 gridArray[i][j]=new Cell(cellSize,x,y,canvas);
             }
         }
@@ -47,6 +46,22 @@ public class Grid {
 
     public Cell[][] getGrid(){
         return gridArray;
+    }
+
+    public void fillCell(int row, int col){
+        gridArray[row][col].temporaryFill();
+    }
+
+
+    public void unFill(int previousRow, int currentCol) {
+        gridArray[previousRow][currentCol].unFillTemporary();
+        
+
+    }
+
+    public void permanentlyFill(int row, int col){
+        gridArray[row][col].permanentFill();
+
     }
     
 }
