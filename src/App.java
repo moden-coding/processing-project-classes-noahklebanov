@@ -5,11 +5,12 @@ import java.util.ArrayList;
 public class App extends PApplet{
 
         int rows = 20; //later turn to user input
-        int cols = 10; //later turn to user input
-        Block testBlock;
-        Block testBlock1;
+        int cols =10; //later turn to user input
+    
+        Block activeBlock;
         ArrayList<Block> blocks;
         Grid mainGrid=new Grid(rows,cols, this, blocks);
+        int scene;
         
         
 
@@ -26,45 +27,66 @@ public class App extends PApplet{
         blocks = new ArrayList<>();
         background(200);
         mainGrid.createGrid();
-        for(int i = 0; i < 7; i++) {
-            Block block = new Block(rows,cols,mainGrid.getGrid(),mainGrid,this);
-            blocks.add(block);
-        }
 
-    
+        activeBlock = new Block(rows,cols,mainGrid,this);
+
+        scene = 1; //change this
     }
 
     public void draw(){
-        background(200);
-        mainGrid.drawGrid();
-        for(Block b : blocks) {
-            b.displayBlock();
-            b.moveBlock();
-        }
-        // testBlock.display();
-        // testBlock1.display();
-        // testBlock.autoMove();
-        // testBlock1.autoMove();
-        
+        if(scene==1){
+            addBlocks();
+            background(200);
+            mainGrid.drawGrid();
 
+            activeBlock.displayBlock(); //works with the moveBlock() to show the updated position of the block
+            activeBlock.moveBlock();
+            stoppedLogic();
+        }
+    
+    }
+
+    public void clearBlocks(){
+        int sameRowCount=0;
+        
+    }
+
+    public void stoppedLogic(){
+        boolean onBlock = activeBlock.isOnStoppedBlock();
+        boolean onBottom=activeBlock.isOnBottom();
+        if(onBlock || onBottom){
+            activeBlock.permanentlyFillBlock();
+        }
+    }
+
+    public void addBlocks(){
+        if(activeBlock.fillStatus()){
+            Block oldBlock;
+            oldBlock=activeBlock;
+            blocks.add(oldBlock);
+            activeBlock = new Block(rows,cols,mainGrid,this);
+            //System.out.println(blocks.size()-1);
+        }
     }
 
     public void keyPressed(){
-        if(key==DOWN){
-            testBlock.moveDown();
+        if(keyCode==DOWN){
+            activeBlock.moveDown();
+            //testBlock.displayBlock();
+        }
+        if(keyCode==RIGHT){
+            activeBlock.moveRight();
+            //testBlock.displayBlock();
     
         }
-        if(key==RIGHT){
-            testBlock.moveRight();
-    
-        }
-        if(key==LEFT){
-            testBlock.moveLeft();
+        if(keyCode==LEFT){
+            activeBlock.moveLeft();
+            //testBlock.displayBlock();
     
         }
 
         if(key==' '){
-            
+
         }
     }
 }

@@ -27,7 +27,6 @@ public class Grid {
             }
         }
 
-
     }
 
     public void drawGrid(){
@@ -63,5 +62,21 @@ public class Grid {
         gridArray[row][col].permanentFill();
 
     }
+
+    public boolean getPermanentFillStatus(int row, int col){
+        return gridArray[row][col].permanentFillStatus();
+     
+    }
+
+    // public void clearRow(int row){
+    //     for(Cell c: gridArray[row]){
+
+
+    //     }
+
+    // }
+
+
+
     
 }

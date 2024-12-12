@@ -1,85 +1,126 @@
 import processing.core.PApplet;
 
 public class Block {
-
+    private PApplet canvas;
     private int currentRow; //not indices
     private int currentCol; //not indices
-    private PApplet canvas;
-    //private Cell[][] gridArray; //to delete
-    private Grid mainGrid; //replacement
-    private int frameCounter=0;
     private int previousRow;
-    private boolean stopped = false;
+    private int prevCol;
+    private Grid mainGrid;
+    private int frameCounter=0;
     private int rows;
-   
+    private int cols;
 
-    public Block(int rows, int cols, Cell[][] ga, Grid g, PApplet c){
+           
+        
+    public Block(int rows, int cols, Grid g, PApplet c){
         canvas=c;
-        currentRow=(int)canvas.random(rows-1); //turned to indices
-        currentRow=0; //indice
-        currentCol=(int)canvas.random(cols-1); //turned to indices
-        //gridArray=ga;
         mainGrid=g;
-        this.rows=rows; //not indice
-
+        this.rows=rows; //not an index
+        this.cols=cols; //not an index
+        currentCol=(int)canvas.random(cols); //an index
+        currentRow=0; //an index
+        
     }
 
+    public int getRow(){
+        return currentRow;
+    }   
+
+    public int getCol(){
+        return currentCol;
+    }
     
     public void displayBlock() {
+        //System.out.println(currentRow);
         mainGrid.fillCell(currentRow,currentCol);
-        mainGrid.unFill(previousRow,currentCol);
-       
+               
     }
-    public boolean isCollidingWithBlock() {
-        if(currentRow < this.rows-1){
-            
-        }
-        return false;
-    }
-
-    public boolean onBottom(){
-        if(currentRow==rows){
-            stopped=true;
-            return stopped;
-        }
-        return false;
-    }
-
-    public boolean stopped(){
-        if(stopped){
+        
+    public boolean isOnBottom(){
+        if(currentRow==this.rows-1){ 
+            //System.out.println("detected on bottom");
             return true;
         }
         return false;
     }
-    
 
-
-    public void moveBlock(){
-        frameCounter++;
-        if(frameCounter%45==0 && !stopped){
-            previousRow=currentRow;
-            currentRow++;
+    public boolean isOnStoppedBlock() {
+        int nextRow=currentRow+1;
+        if(nextRow<20){
+            if(mainGrid.getPermanentFillStatus(nextRow,currentCol)){
+                //System.out.println("detected on stopped block");
+                return true;
+                
+            }
         }
-
+        return false;
     }
 
-
-
-    public static void moveDown() {
-        //currentCol++;
+    public void permanentlyFillBlock(){
+        mainGrid.permanentlyFill(currentRow, currentCol);
+    }
+        
+    public boolean fillStatus(){
+        if(mainGrid.getPermanentFillStatus(currentRow, currentCol)){
+            return true;
+        }
+        return false;
+    }
+               
+    public void moveBlock(){
+        frameCounter++;
+        if(frameCounter%45==0 && currentRow<this.rows-1){
+            previousRow=currentRow; 
+            mainGrid.unFill(previousRow,currentCol);
+            currentRow++;
+        }
+    }
+        
+     public void moveDown() {
+        if(currentRow<this.rows-1){
+            previousRow = currentRow;
+            mainGrid.unFill(previousRow, currentCol);
+            currentRow++;
+        }
+        
        
     }
    
-
-    public static void moveLeft() {
+    public void moveLeft() {
+        if(currentCol>0){
+            previousRow=currentRow;
+            prevCol = currentCol;
+            mainGrid.unFill(currentRow, prevCol);
+            currentCol--;
+        }
         
     }
 
-    public static void moveRight() {
+    public void moveRight() {
+        if(currentCol<this.cols-1){
+            previousRow=currentRow;
+            prevCol=currentCol;
+            mainGrid.unFill(currentRow, prevCol);
+            currentCol++;
+        }
+        
         
     }
 
    
 
-   
+
 }
+
+ //OLD CODE
+
+    // public void stoppedLogic(){
+    //     System.out.println("stopped logic checked");
+    //     boolean stoppedBlock = isOnStoppedBlock();
+    //     boolean onBottom = isOnBottom();
+    //     if(stoppedBlock || onBottom){
+    //         mainGrid.permanentlyFill(currentRow, currentCol);
+    //         System.out.println("block was permanently filled");
+    //     }
+    // }
