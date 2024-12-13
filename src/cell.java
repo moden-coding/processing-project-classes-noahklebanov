@@ -49,6 +49,10 @@ public class Cell {
         permanentlyFilled=true;
     }
 
+    public void unFillPermanent(){
+        permanentlyFilled=false;
+        filled=false;
+    }
 
     public boolean permanentFillStatus(){
         return permanentlyFilled;

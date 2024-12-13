@@ -8,7 +8,9 @@ public class Grid {
     private Cell[][] gridArray;
     private PApplet canvas;
 
-    public Grid(int r, int co, PApplet c , ArrayList<Block> blocks){
+
+    //ArrayList<Block> blocks
+    public Grid(int r, int co, PApplet c){
         rows=r;
         cols=co;
         canvas=c;
@@ -51,7 +53,6 @@ public class Grid {
         gridArray[row][col].temporaryFill();
     }
 
-
     public void unFill(int previousRow, int currentCol) {
         gridArray[previousRow][currentCol].unFillTemporary();
         
@@ -68,15 +69,56 @@ public class Grid {
      
     }
 
-    // public void clearRow(int row){
-    //     for(Cell c: gridArray[row]){
+    public void clearFullRows(){ 
+        for(int i = rows-1; i>=0; i--){
+            boolean fullRow=true;
+            for(int j = 0; j<gridArray[i].length; j++){
+                if(!gridArray[i][j].permanentFillStatus()){
+                    fullRow=false;
+                    break;
+                }
+            }
+            if(fullRow){
+                clearRow(i);
+                i++; //recheck the current row after shifting
+                
+            }
+        }
+    }
+
+    public void clearRow(int row){
+        for(int i=0;i<cols;i++){       //unfill the cells but may be unnecessary(actually probably needed unless above row is also filled)
+            gridArray[row][i].unFillPermanent();
+        }
+
+        for(int i=row; i>=0; i--){
+            for(int j=0;j<gridArray[i].length; j++){
+                gridArray[i][j]=gridArray[i-1][j];
+            }
+        }
+
+        //if needed implement something to clear the top row
+
+    }
 
 
-    //     }
 
-    // }
 
+}
 
 
     
-}
+    // public boolean shouldCheckForFullRows(){
+    //     for(int i = 0; i<gridArray.length; i++){
+    //         boolean fullRow=true;
+    //         for(int j = 0; j<gridArray[i].length; j++){
+    //             if(!gridArray[i][j].permanentFillStatus()){
+    //                 fullRow=false;
+    //             }
+    //         }
+    //         if(fullRow){
+    //             return true;
+    //         }
+    //     }
+    //     return false;
+    // }

@@ -30,7 +30,7 @@ public class Block {
     public int getCol(){
         return currentCol;
     }
-    
+
     public void displayBlock() {
         //System.out.println(currentRow);
         mainGrid.fillCell(currentRow,currentCol);
@@ -61,13 +61,17 @@ public class Block {
         mainGrid.permanentlyFill(currentRow, currentCol);
     }
         
-    public boolean fillStatus(){
+    public boolean permanentlyFilled(){
         if(mainGrid.getPermanentFillStatus(currentRow, currentCol)){
             return true;
         }
         return false;
     }
-               
+
+    public void unFill(){
+        mainGrid.unFill(currentRow,currentCol);
+    }
+
     public void moveBlock(){
         frameCounter++;
         if(frameCounter%45==0 && currentRow<this.rows-1){
@@ -108,7 +112,6 @@ public class Block {
         
     }
 
-   
 
 
 }
