@@ -8,8 +8,6 @@ public class Grid {
     private Cell[][] gridArray;
     private PApplet canvas;
 
-
-    //ArrayList<Block> blocks
     public Grid(int r, int co, PApplet c){
         rows=r;
         cols=co;
@@ -87,38 +85,19 @@ public class Grid {
     }
 
     public void clearRow(int row){
-        for(int i=0;i<cols;i++){       //unfill the cells but may be unnecessary(actually probably needed unless above row is also filled)
-            gridArray[row][i].unFillPermanent();
+        for(int i=0;i<cols;i++){
+            gridArray[row][i].resetFill();
         }
 
-        for(int i=row; i>=0; i--){
-            for(int j=0;j<gridArray[i].length; j++){
-                gridArray[i][j]=gridArray[i-1][j];
+        for(int i=row; i>0; i--){
+            for(int j=0;j<gridArray[i].length; j++){ //shift rows down
+                if(gridArray[i-1][j].permanentFillStatus()){
+                    gridArray[i-1][j].resetFill();
+                    gridArray[i][j].permanentFill();
+                }
             }
         }
-
-        //if needed implement something to clear the top row
-
     }
 
 
-
-
 }
-
-
-    
-    // public boolean shouldCheckForFullRows(){
-    //     for(int i = 0; i<gridArray.length; i++){
-    //         boolean fullRow=true;
-    //         for(int j = 0; j<gridArray[i].length; j++){
-    //             if(!gridArray[i][j].permanentFillStatus()){
-    //                 fullRow=false;
-    //             }
-    //         }
-    //         if(fullRow){
-    //             return true;
-    //         }
-    //     }
-    //     return false;
-    // }

@@ -74,7 +74,7 @@ public class Block {
 
     public void moveBlock(){
         frameCounter++;
-        if(frameCounter%45==0 && currentRow<this.rows-1){
+        if(frameCounter%45==0 && currentRow<this.rows-1){ //every 45 frames the block automatically moves down one
             previousRow=currentRow; 
             mainGrid.unFill(previousRow,currentCol);
             currentRow++;
@@ -93,23 +93,25 @@ public class Block {
    
     public void moveLeft() {
         if(currentCol>0){
-            previousRow=currentRow;
-            prevCol = currentCol;
-            mainGrid.unFill(currentRow, prevCol);
-            currentCol--;
-        }
-        
+            if(!mainGrid.getPermanentFillStatus(currentRow, currentCol-1)){
+                previousRow=currentRow;
+                prevCol = currentCol;
+                mainGrid.unFill(currentRow, prevCol);
+                currentCol--;
+            }    
+        }   
     }
 
     public void moveRight() {
         if(currentCol<this.cols-1){
-            previousRow=currentRow;
-            prevCol=currentCol;
-            mainGrid.unFill(currentRow, prevCol);
-            currentCol++;
-        }
-        
-        
+            if(!mainGrid.getPermanentFillStatus(currentRow, currentCol+1)){
+                previousRow=currentRow;
+                prevCol=currentCol;
+                mainGrid.unFill(currentRow, prevCol);
+                currentCol++;
+            }
+           
+        }   
     }
 
 
@@ -117,13 +119,3 @@ public class Block {
 }
 
  //OLD CODE
-
-    // public void stoppedLogic(){
-    //     System.out.println("stopped logic checked");
-    //     boolean stoppedBlock = isOnStoppedBlock();
-    //     boolean onBottom = isOnBottom();
-    //     if(stoppedBlock || onBottom){
-    //         mainGrid.permanentlyFill(currentRow, currentCol);
-    //         System.out.println("block was permanently filled");
-    //     }
-    // }

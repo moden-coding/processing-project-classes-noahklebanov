@@ -49,7 +49,7 @@ public class Cell {
         permanentlyFilled=true;
     }
 
-    public void unFillPermanent(){
+    public void resetFill(){
         permanentlyFilled=false;
         filled=false;
     }
