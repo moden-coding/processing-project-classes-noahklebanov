@@ -1,13 +1,23 @@
 import processing.core.*;
 import java.util.ArrayList;
 
+//THINGS TO DO
+/*
+when making multiple block shapes have each block 
+take in the row and col it will fill instead of letting
+the block class take care of that, generate the row and 
+col values in the app class and give this to the block class
+*/
+
 
 public class App extends PApplet{
 
     int rows = 20; //later turn to user input
     int cols =10; //later turn to user input
     Block activeBlock;
+    Block activeBlock2;
     Grid mainGrid=new Grid(rows,cols, this);
+    ArrayList<Block> activeBlocks;
     int scene;
 
     public static void main(String[] args)  {
@@ -23,56 +33,71 @@ public class App extends PApplet{
         //blocks = new ArrayList<>();
         background(200);
         mainGrid.createGrid();
-
-        activeBlock = new Block(rows,cols,mainGrid,this);
-
+        activeBlocks = new ArrayList<>();
+        makeFirstBlocks();
+    
         scene = 1; //change this
     }
 
     public void draw(){
         if(scene==1){
-            makeNewBlock();
-            background(200);
             
+            background(200);
             mainGrid.drawGrid();
 
-            activeBlock.displayBlock(); //works with the moveBlock() to show the updated position of the block
-            activeBlock.moveBlock();
+            for(Block b: activeBlocks){
+                makeNewBlock(b);
+                b.displayBlock(); //works with the moveBlock() to show the updated position of the block
+                b.moveBlock();
+                stoppedLogic(b);
+            }
             mainGrid.clearFullRows();
-            stoppedLogic();
-            //System.out.println(blocks.size());
 
         }
     
     }
 
-    public void stoppedLogic(){
-        boolean onBlock = activeBlock.isOnStoppedBlock();
-        boolean onBottom=activeBlock.isOnBottom();
+    public void stoppedLogic(Block block){
+        boolean onBlock = block.isOnStoppedBlock();
+        boolean onBottom=block.isOnBottom();
         if(onBlock || onBottom){
-            activeBlock.permanentlyFillBlock();
+            block.permanentlyFillBlock();
         }
     }
 
-    public void makeNewBlock(){
-        if(activeBlock.permanentlyFilled()){
-            activeBlock = new Block(rows,cols,mainGrid,this);
-            // Block oldBlock;
-            // oldBlock=activeBlock;
-            // blocks.add(oldBlock);
-            //System.out.println(blocks.size()-1);
+    public void makeFirstBlocks(){
+        int col = (int)random(0,cols);
+        activeBlock = new Block(0,col, rows, cols, mainGrid,this);
+        activeBlock2 = new Block(0,col, rows+1, cols, mainGrid,this);
+        activeBlocks.add(activeBlock);
+        activeBlocks.add(activeBlock2);
+
+    }
+
+    public void makeNewBlock(Block block){
+        if(block.permanentlyFilled()){
+            activeBlocks.remove(block);
+            int col = (int)random(0,cols);
+            block = new Block(0,col,rows,cols,mainGrid,this);
+            activeBlocks.add(block);
         }
     }
 
     public void keyPressed(){
         if(keyCode==DOWN){
-            activeBlock.moveDown();
+            for(Block b: activeBlocks){
+                b.moveDown();
+            }  
         }
         if(keyCode==RIGHT){
-            activeBlock.moveRight();
+            for(Block b: activeBlocks){
+                b.moveRight();
+            }  
         }
         if(keyCode==LEFT){
-            activeBlock.moveLeft();
+            for(Block b: activeBlocks){
+                b.moveLeft();
+            }  
         }
         if(key==' '){
         

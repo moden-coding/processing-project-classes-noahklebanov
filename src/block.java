@@ -11,18 +11,17 @@ public class Block {
     private int rows;
     private int cols;
 
-           
         
-    public Block(int rows, int cols, Grid g, PApplet c){
+    public Block(int row, int col, int rows, int cols, Grid g, PApplet c){
         canvas=c;
         mainGrid=g;
         this.rows=rows; //not an index
         this.cols=cols; //not an index
-        currentCol=(int)canvas.random(cols); //an index
-        currentRow=0; //an index
+        currentRow=row;
+        currentCol=col;
         
     }
-
+    
     public int getRow(){
         return currentRow;
     }   
@@ -34,7 +33,7 @@ public class Block {
     public void displayBlock() {
         //System.out.println(currentRow);
         mainGrid.fillCell(currentRow,currentCol);
-               
+        
     }
         
     public boolean isOnBottom(){
@@ -56,11 +55,11 @@ public class Block {
         }
         return false;
     }
-
+    
     public void permanentlyFillBlock(){
         mainGrid.permanentlyFill(currentRow, currentCol);
-    }
-        
+    } 
+    
     public boolean permanentlyFilled(){
         if(mainGrid.getPermanentFillStatus(currentRow, currentCol)){
             return true;
@@ -81,16 +80,15 @@ public class Block {
         }
     }
         
-     public void moveDown() {
+    public void moveDown() {
         if(currentRow<this.rows-1){
             previousRow = currentRow;
             mainGrid.unFill(previousRow, currentCol);
             currentRow++;
         }
         
-       
     }
-   
+
     public void moveLeft() {
         if(currentCol>0){
             if(!mainGrid.getPermanentFillStatus(currentRow, currentCol-1)){
@@ -114,8 +112,5 @@ public class Block {
         }   
     }
 
-
-
 }
 
- //OLD CODE
