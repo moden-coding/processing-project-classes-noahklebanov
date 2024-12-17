@@ -26,11 +26,10 @@ public class App extends PApplet{
 
     public void settings(){
         size(800,600);
-    
+
     }
 
     public void setup(){
-        //blocks = new ArrayList<>();
         background(200);
         mainGrid.createGrid();
         activeBlocks = new ArrayList<>();
@@ -41,13 +40,10 @@ public class App extends PApplet{
 
     public void draw(){
         if(scene==1){
-            
-            background(200);
             mainGrid.drawGrid();
-
+            makeBlocks();
             for(Block b: activeBlocks){
-                makeNewBlock(b);
-                b.displayBlock(); //works with the moveBlock() to show the updated position of the block
+                b.displayBlock();
                 b.moveBlock();
                 stoppedLogic(b);
             }
@@ -65,6 +61,27 @@ public class App extends PApplet{
         }
     }
 
+    public void makeBlocks(){ //later add a ranomly generated parameter this method takes in to determine which shape to make
+        if(activeBlocks.size()==0){
+            int col = (int)random(0,cols);
+
+        }else{
+            boolean oneStopped = false;
+            for(Block b: activeBlocks){
+                if(b.permanentlyFilled()){
+                    oneStopped=true;
+                }
+
+            }
+            if(oneStopped){
+                
+            }
+        }
+
+
+
+    }
+    
     public void makeFirstBlocks(){
         int col = (int)random(0,cols);
         activeBlock = new Block(0,col, rows, cols, mainGrid,this);

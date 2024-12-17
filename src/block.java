@@ -31,14 +31,11 @@ public class Block {
     }
 
     public void displayBlock() {
-        //System.out.println(currentRow);
         mainGrid.fillCell(currentRow,currentCol);
-        
     }
         
     public boolean isOnBottom(){
         if(currentRow==this.rows-1){ 
-            //System.out.println("detected on bottom");
             return true;
         }
         return false;
@@ -48,7 +45,6 @@ public class Block {
         int nextRow=currentRow+1;
         if(nextRow<20){
             if(mainGrid.getPermanentFillStatus(nextRow,currentCol)){
-                //System.out.println("detected on stopped block");
                 return true;
                 
             }
