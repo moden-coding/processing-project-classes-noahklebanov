@@ -8,6 +8,7 @@ public class Cell {
     private int color;
     public boolean filled;
     public boolean permanentlyFilled;
+    public boolean resetFill; //to test
 
     public Cell(int sze, int xpos, int ypos, PApplet c){
         size=sze;
@@ -17,6 +18,7 @@ public class Cell {
         color=canvas.color(0,0,0);
         filled=false;
         permanentlyFilled=false;
+        resetFill=false; //to test
     }
 
     public void displayCell(){
@@ -52,12 +54,15 @@ public class Cell {
     public void resetFill(){
         permanentlyFilled=false;
         filled=false;
+        resetFill=true; //to test
     }
 
     public boolean permanentFillStatus(){
         return permanentlyFilled;
     }
 
-
+    public boolean wasFillReset(){
+        return resetFill;
+    }
 
 }

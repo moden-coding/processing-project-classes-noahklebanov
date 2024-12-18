@@ -67,6 +67,10 @@ public class Grid {
      
     }
 
+    public boolean getResetFillStatus(int row, int col){
+        return gridArray[row][col].wasFillReset();
+    }
+
     public void clearFullRows(){ 
         for(int i = rows-1; i>=0; i--){
             boolean fullRow=true;
@@ -79,7 +83,6 @@ public class Grid {
             if(fullRow){
                 clearRow(i);
                 i++; //recheck the current row after shifting
-                
             }
         }
     }

@@ -33,6 +33,14 @@ public class Block {
     public void displayBlock() {
         mainGrid.fillCell(currentRow,currentCol);
     }
+
+    public void stoppedLogic(){
+        boolean onBlock = isOnStoppedBlock();
+        boolean onBottom= isOnBottom();
+        if(onBlock || onBottom){
+            permanentlyFillBlock();
+        }
+    }
         
     public boolean isOnBottom(){
         if(currentRow==this.rows-1){ 
@@ -57,14 +65,33 @@ public class Block {
     } 
     
     public boolean permanentlyFilled(){
-        if(mainGrid.getPermanentFillStatus(currentRow, currentCol)){
-            return true;
+        return mainGrid.getPermanentFillStatus(currentRow, currentCol);
+    }
+
+    public boolean wasFillReset() {
+        return mainGrid.getResetFillStatus(currentRow, currentCol);
+    }
+
+    public void rotate90left(int centerRow, int centerCol){
+        
+        int row = currentRow-centerRow;
+        int col = currentCol-centerRow;
+        int newRow=col;
+        int newCol=-row;
+        int testRow=newRow+centerRow;
+        int testCol=newCol+centerCol;
+        if(testRow<this.rows && testRow>=0 && testCol<this.cols && testCol>=0){
+            currentRow=testRow;
+            currentCol=testCol;
         }
-        return false;
     }
 
     public void unFill(){
         mainGrid.unFill(currentRow,currentCol);
+    }
+
+    public void fill(){
+        mainGrid.fillCell(currentRow, currentCol);
     }
 
     public void moveBlock(){
@@ -107,6 +134,8 @@ public class Block {
            
         }   
     }
+
+    
 
 }
 
