@@ -10,6 +10,8 @@ public class Block {
     private int frameCounter=0;
     private int rows;
     private int cols;
+    private int testRow; //for rotation
+    private int testCol; //for rotation
 
         
     public Block(int row, int col, int rows, int cols, Grid g, PApplet c){
@@ -68,22 +70,62 @@ public class Block {
         return mainGrid.getPermanentFillStatus(currentRow, currentCol);
     }
 
+    public boolean blockToTheRightFilled(){
+        if(currentCol<this.cols-1){
+            return mainGrid.getPermanentFillStatus(currentRow, currentCol+1);
+        }else{
+            return true;
+        }
+        
+    }
+
+    public boolean blockToTheLeftFilled(){
+        if(currentCol>0){
+            return mainGrid.getPermanentFillStatus(currentRow, currentCol-1);
+        }else{
+            return true;
+        }
+    }
+
     public boolean wasFillReset() {
         return mainGrid.getResetFillStatus(currentRow, currentCol);
     }
 
     public void rotate90left(int centerRow, int centerCol){
-        
         int row = currentRow-centerRow;
-        int col = currentCol-centerRow;
-        int newRow=col;
-        int newCol=-row;
+        int col = currentCol-centerCol;
+        int newRow=-col;
+        int newCol=row;
         int testRow=newRow+centerRow;
         int testCol=newCol+centerCol;
         if(testRow<this.rows && testRow>=0 && testCol<this.cols && testCol>=0){
             currentRow=testRow;
             currentCol=testCol;
         }
+    }
+
+    public void rotate90right(int centerRow, int centerCol){
+        int row = currentRow-centerRow;
+        int col = currentCol-centerCol;
+        int newRow=col;
+        int newCol=-row;
+        testRow=newRow+centerRow;
+        testCol=newCol+centerCol;
+        if(testRow<this.rows && testRow>=0 && testCol<this.cols && testCol>=0){
+            currentRow=testRow;
+            currentCol=testCol;
+        }
+    }
+
+    public boolean blockFreeToRotateLeft(){ //IMPLEMENT AFTER ALL REQUIREMENTS HIT
+        
+        return false;
+
+    }
+
+    public boolean blockFreeToRotateRight(){ //IMPLEMENT AFTER ALL REQUIREMENTS HIT
+        return false;
+        
     }
 
     public void unFill(){
@@ -112,27 +154,18 @@ public class Block {
         
     }
 
-    public void moveLeft() {
-        if(currentCol>0){
-            if(!mainGrid.getPermanentFillStatus(currentRow, currentCol-1)){
-                previousRow=currentRow;
-                prevCol = currentCol;
-                mainGrid.unFill(currentRow, prevCol);
-                currentCol--;
-            }    
-        }   
+    public void moveLeft() { //in order for this to run, it has all ready been found that the block is free to move
+        previousRow=currentRow;
+        prevCol = currentCol;
+        mainGrid.unFill(currentRow, prevCol);
+        currentCol--;  
     }
 
-    public void moveRight() {
-        if(currentCol<this.cols-1){
-            if(!mainGrid.getPermanentFillStatus(currentRow, currentCol+1)){
-                previousRow=currentRow;
-                prevCol=currentCol;
-                mainGrid.unFill(currentRow, prevCol);
-                currentCol++;
-            }
-           
-        }   
+    public void moveRight() { //in order for this to run, it has all ready been found that the block is free to move
+        previousRow=currentRow;
+        prevCol=currentCol;
+        mainGrid.unFill(currentRow, prevCol);
+        currentCol++; 
     }
 
     

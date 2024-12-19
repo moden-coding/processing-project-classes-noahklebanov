@@ -40,7 +40,6 @@ public class App extends PApplet{
 
     public void draw(){
         if(scene==1){
-            
             for(Block b: activeBlocks){   
                 b.stoppedLogic();
                 b.displayBlock();
@@ -51,16 +50,33 @@ public class App extends PApplet{
             mainGrid.clearFullRows();
 
         }
-
-
-
     
     }
 
+    public boolean allBlocksCanShift(int direction){ 
+        //-1 is left and 1 is right
+        boolean allBlocksFree = true;
+        for(Block b: activeBlocks){
+            if(direction==-1 && b.blockToTheLeftFilled()){
+                allBlocksFree=false;
+            }if(direction==1 && b.blockToTheRightFilled()){
+                allBlocksFree=false;
+            }
+
+        }
+        return allBlocksFree;
+    }
+
+    public boolean allBlocksCanRotate(int direction){ //IMPLEMENT AFTER ALL REQUIREMENTS HIT
+        //90 is counterClockwise(left) and -90 is clockwise(right)
+        return false;
+
+    }
 
     public void makeBlocks(){ //later add a ranomly generated parameter this method takes in to determine which shape to make
         if(activeBlocks.size()==0){ //implement a file reading where the files will store each block
-            int col = (int)random(0,cols);
+            //int col = (int)random(0,cols); in the real game all spawn in the same col
+            int col=4;
             activeBlock = new Block(0,col,rows,cols,mainGrid,this);
             centerBlock=activeBlock;
             activeBlock2 = new Block(1,col,rows,cols,mainGrid,this); 
@@ -68,24 +84,27 @@ public class App extends PApplet{
             activeBlocks.add(activeBlock);
 
         }else{
-            int blocksStopped = 0;
+            boolean allBlocksMoving = true;
             for(Block b: activeBlocks){
                 if(b.permanentlyFilled()){
-                    blocksStopped++;
+                    allBlocksMoving = false;
                 }
-
+    
             }
-            if(blocksStopped==activeBlocks.size()){
-                makeNewBlocks(); //should take in a random file 
+
+            if(!allBlocksMoving){
+                for(Block b: activeBlocks){
+                    b.permanentlyFillBlock();
+                }
+                makeNewBlocks();
             }
         }
-
-
 
     }
 
     public void makeNewBlocks(){ //test code will change later to adding a new shape to the active blocks while removing the old shape
-        int col = (int)random(0,cols);
+        //int col = (int)random(0,cols); in the real game spawns at same col
+        int col = 4;
         activeBlocks.remove(activeBlock2);
         activeBlocks.remove(activeBlock);
         activeBlock = new Block(0,col,rows,cols,mainGrid,this);
@@ -103,36 +122,48 @@ public class App extends PApplet{
             }  
         }
         if(keyCode==RIGHT){
-            for(Block b: activeBlocks){
-                b.moveRight();
-            }  
+            if(allBlocksCanShift(1)){
+                for(Block b: activeBlocks){
+                    b.moveRight();
+                }  
+            }
+            
         }
         if(keyCode==LEFT){
-            for(Block b: activeBlocks){
-                b.moveLeft();
-            }  
+            if(allBlocksCanShift(-1)){
+                for(Block b: activeBlocks){
+                    b.moveLeft();
+                }  
+            }
         }
 
         if(key=='z'){
             int centerRow = centerBlock.getRow();
             int centerCol= centerBlock.getCol();
             for(Block b: activeBlocks){
-                b.unFill();
-                if(b!=centerBlock){
+                if(b!=centerBlock && allBlocksCanRotate(90)){
+                    b.unFill();
                     b.rotate90left(centerRow,centerCol);
                     b.fill();
                 }
             }
         }
 
-        if(key=='b'){
-
+        if(key=='x'){
+            int centerRow = centerBlock.getRow();
+            int centerCol= centerBlock.getCol();
+            for(Block b: activeBlocks){
+                if(b!=centerBlock && allBlocksCanRotate(-90)){
+                    b.unFill();
+                    b.rotate90right(centerRow,centerCol);
+                    b.fill();
+                }
+            }
         }
 
     }
 
 }
-
 
     // public void makeFirstBlocks(){
     //     int col = (int)random(0,cols);
