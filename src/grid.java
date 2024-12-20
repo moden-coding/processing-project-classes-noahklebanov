@@ -7,6 +7,7 @@ public class Grid {
     private int cols;
     private Cell[][] gridArray;
     private PApplet canvas;
+    private int score;
 
     public Grid(int r, int co, PApplet c){
         rows=r;
@@ -18,7 +19,8 @@ public class Grid {
     public void createGrid(){
         gridArray=new Cell[rows][cols];
         int cellSize = determineSize(rows, cols);
-        int cellXposOffset = (canvas.width-cols*cellSize)/2;
+        //int cellXposOffset = (canvas.width-cols*cellSize)/2;
+        int cellXposOffset = 200;
         for(int i = 0; i<gridArray.length; i++){
             for(int j = 0; j<gridArray[i].length; j++){
                 int x=cellSize*j+cellXposOffset;
@@ -82,6 +84,7 @@ public class Grid {
             }
             if(fullRow){
                 clearRow(i);
+                score+=10;
                 i++; //recheck the current row after shifting
             }
         }
@@ -109,4 +112,22 @@ public class Grid {
             }
         }
     }
+
+    public int getScore(){
+        return score;
+    }
+
+    public void updateScore(int newScore){
+        score=newScore;
+    }
+
+    public boolean gameEnd(int col){
+        if(gridArray[0][col].permanentFillStatus()){
+            return true;
+        }
+
+        return false;
+
+    }
 }
+

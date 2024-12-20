@@ -1,13 +1,9 @@
 import processing.core.*;
 import java.util.ArrayList;
-
-//THINGS TO DO
-/*
-when making multiple block shapes have each block 
-take in the row and col it will fill instead of letting
-the block class take care of that, generate the row and 
-col values in the app class and give this to the block class
-*/
+import java.util.Scanner;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.nio.file.Paths;
 
 
 public class App extends PApplet{
@@ -20,11 +16,13 @@ public class App extends PApplet{
     Grid mainGrid=new Grid(rows,cols, this);
     ArrayList<Block> activeBlocks;
     double scene;
-    int score;
+    int highScore;
 
     PImage startScreen;
     PImage plainScreen;
     PImage instructions;
+    PImage playScreen;
+    PImage endScreen;
 
     public static void main(String[] args)  {
         PApplet.main("App");
@@ -38,16 +36,17 @@ public class App extends PApplet{
     public void setup(){
         startScreen = loadImage("startScreen2.png");
         plainScreen = loadImage("plainScreen.png");
+        playScreen = loadImage("playScreen.png");
         instructions = loadImage("instructions.png");
+        endScreen = loadImage("endScreen.png");
 
-        scene = 0; //change this to user input
-        score=0;
+        scene = 0;
         
         background(200);
         mainGrid.createGrid();
-        activeBlocks = new ArrayList<>();
-    
-        
+        activeBlocks = new ArrayList<>();     
+
+        readHighScore();
     }
 
     public void draw(){
@@ -57,11 +56,14 @@ public class App extends PApplet{
 
         else if(scene==1.1){
             image(instructions,0,0,800,600);
-
         }
 
         else if(scene==1){
-            image(plainScreen,0,0,800,600);
+            image(playScreen,0,0,800,600);
+            textSize(30);
+            fill(0);
+            text(mainGrid.getScore(), 685,247);
+            text(highScore, 685,335);
             for(Block b: activeBlocks){   
                 b.stoppedLogic();
                 b.displayBlock();
@@ -70,15 +72,52 @@ public class App extends PApplet{
             mainGrid.drawGrid();
             makeBlocks();
             mainGrid.clearFullRows();
-
+            if(checkGameEnd()){
+                resetGame();
+                scene = 2;
+            }
+            if(mainGrid.getScore()>highScore){
+                highScore=mainGrid.getScore();   
+            }
         }
-    
+        else if(scene==2){
+            image(endScreen,0,0,800,600);
+            resetGame();
+        }
     }
+
     public void resetGame(){
         mainGrid.clearAllRows();
-        makeNewBlocks();
-        score=0;
+        makeNewBlocks(); //to restart the position of the active blocks
+        saveHighScore();
+        mainGrid.updateScore(0);
 
+    }
+
+    public void readHighScore(){
+        try (Scanner scanner = new Scanner(Paths.get("highScore.txt"))) {
+
+            // we read the file until all lines have been read
+            while (scanner.hasNextLine()) {
+                // we read one line
+                String row = scanner.nextLine();
+                highScore = Integer.valueOf(row);
+            }
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+        
+    }
+
+    public void saveHighScore(){
+        try(PrintWriter writer = new PrintWriter("highScore.txt")){
+            writer.println(highScore);
+            writer.close();
+
+        }catch (IOException e) {
+            System.out.println("an error occured while writing the file");
+            e.printStackTrace();
+        }
     }
 
     public boolean allBlocksCanShift(int direction){ 
@@ -97,7 +136,7 @@ public class App extends PApplet{
 
     public boolean allBlocksCanRotate(int direction){ //IMPLEMENT AFTER ALL REQUIREMENTS HIT
         //90 is counterClockwise(left) and -90 is clockwise(right)
-        return false;
+        return true;
 
     }
 
@@ -141,6 +180,16 @@ public class App extends PApplet{
         activeBlocks.add(activeBlock2);
         activeBlocks.add(activeBlock);
 
+    }
+
+    public boolean checkGameEnd(){
+        for(Block b: activeBlocks){
+            if(mainGrid.gameEnd(b.getCol())){
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public void keyPressed(){
@@ -189,6 +238,10 @@ public class App extends PApplet{
             }
         }
 
+        if(key=='r' && scene==2){
+            scene=1;
+        }
+
     }
     
     public void mousePressed(){
@@ -210,5 +263,4 @@ public class App extends PApplet{
     }
 
 }
-
     
