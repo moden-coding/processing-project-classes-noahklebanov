@@ -102,5 +102,11 @@ public class Grid {
         }
     }
 
-
+    public void clearAllRows(){
+        for(Cell[] row: gridArray){
+            for(Cell c: row){
+                c.resetFill();
+            }
+        }
+    }
 }

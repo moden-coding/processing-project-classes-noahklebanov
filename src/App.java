@@ -19,7 +19,12 @@ public class App extends PApplet{
     Block centerBlock;
     Grid mainGrid=new Grid(rows,cols, this);
     ArrayList<Block> activeBlocks;
-    int scene;
+    double scene;
+    int score;
+
+    PImage startScreen;
+    PImage plainScreen;
+    PImage instructions;
 
     public static void main(String[] args)  {
         PApplet.main("App");
@@ -31,15 +36,32 @@ public class App extends PApplet{
     }
 
     public void setup(){
+        startScreen = loadImage("startScreen2.png");
+        plainScreen = loadImage("plainScreen.png");
+        instructions = loadImage("instructions.png");
+
+        scene = 0; //change this to user input
+        score=0;
+        
         background(200);
         mainGrid.createGrid();
         activeBlocks = new ArrayList<>();
     
-        scene = 1; //change this
+        
     }
 
     public void draw(){
-        if(scene==1){
+        if(scene==0){
+            image(startScreen,0,0,800,600);
+        }
+
+        else if(scene==1.1){
+            image(instructions,0,0,800,600);
+
+        }
+
+        else if(scene==1){
+            image(plainScreen,0,0,800,600);
             for(Block b: activeBlocks){   
                 b.stoppedLogic();
                 b.displayBlock();
@@ -51,6 +73,12 @@ public class App extends PApplet{
 
         }
     
+    }
+    public void resetGame(){
+        mainGrid.clearAllRows();
+        makeNewBlocks();
+        score=0;
+
     }
 
     public boolean allBlocksCanShift(int direction){ 
@@ -162,22 +190,25 @@ public class App extends PApplet{
         }
 
     }
+    
+    public void mousePressed(){
+        if(mouseX>286 && mouseX<286+227 && mouseY>211 && mouseY<211+88 && scene==0){ //start button
+            scene=1;
+        }
+
+        if(mouseX>330 && mouseX<330+138 && mouseY>311 && mouseY<311+49 && scene==0){ //instructions
+            scene=1.1;
+        }
+
+        if(mouseX>700 && mouseX<700+79 && mouseY>10 && mouseY<10+75 && scene!=0){ //homeButton
+            if(scene == 1){
+                resetGame();
+            }
+            scene=0;
+            }
+
+    }
 
 }
 
-    // public void makeFirstBlocks(){
-    //     int col = (int)random(0,cols);
-    //     activeBlock = new Block(0,col, rows, cols, mainGrid,this);
-    //     activeBlock2 = new Block(0,col, rows+1, cols, mainGrid,this);
-    //     activeBlocks.add(activeBlock);
-    //     activeBlocks.add(activeBlock2);
-    // }
-
-    // public void makeNewBlock(Block block){
-    //     if(block.permanentlyFilled()){
-    //         activeBlocks.remove(block);
-    //         int col = (int)random(0,cols);
-    //         block = new Block(0,col,rows,cols,mainGrid,this);
-    //         activeBlocks.add(block);
-    //     }
-    // }
+    
