@@ -1,6 +1,6 @@
 import processing.core.PApplet;
 
-public class Cell {
+public class Cell { //not aware of any class and only grid class calls this
     private int size;
     private PApplet canvas;
     private int x;

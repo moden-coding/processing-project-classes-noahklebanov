@@ -54,7 +54,7 @@ public class App extends PApplet{
             image(startScreen,0,0,800,600);
         }
 
-        else if(scene==1.1){
+        else if(scene==0.1){  //called 1.1 as still apart of start
             image(instructions,0,0,800,600);
         }
 
@@ -88,8 +88,8 @@ public class App extends PApplet{
 
     public void resetGame(){
         mainGrid.clearAllRows();
-        makeNewBlocks(); //to restart the position of the active blocks
-        saveHighScore();
+        makeNewBlocks(); //to restart the posittion of the active blocks(the col in which the block appears is not random anymore)
+        saveHighScore(); 
         mainGrid.updateScore(0);
 
     }
@@ -120,7 +120,18 @@ public class App extends PApplet{
         }
     }
 
-    public boolean allBlocksCanShift(int direction){ 
+    public boolean checkGameEnd(){
+        for(Block b: activeBlocks){
+            if(mainGrid.gameEnd(b.getCol())){
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+//FROM HERE
+    public boolean allBlocksCanShift(int direction){
         //-1 is left and 1 is right
         boolean allBlocksFree = true;
         for(Block b: activeBlocks){
@@ -182,16 +193,6 @@ public class App extends PApplet{
 
     }
 
-    public boolean checkGameEnd(){
-        for(Block b: activeBlocks){
-            if(mainGrid.gameEnd(b.getCol())){
-                return true;
-            }
-        }
-
-        return false;
-    }
-
     public void keyPressed(){
         if(keyCode==DOWN){
             for(Block b: activeBlocks){
@@ -243,14 +244,15 @@ public class App extends PApplet{
         }
 
     }
-    
+//TO HERE will be  dramatically changed after the shape class is used
+
     public void mousePressed(){
         if(mouseX>286 && mouseX<286+227 && mouseY>211 && mouseY<211+88 && scene==0){ //start button
             scene=1;
         }
 
         if(mouseX>330 && mouseX<330+138 && mouseY>311 && mouseY<311+49 && scene==0){ //instructions
-            scene=1.1;
+            scene=0.1;
         }
 
         if(mouseX>700 && mouseX<700+79 && mouseY>10 && mouseY<10+75 && scene!=0){ //homeButton

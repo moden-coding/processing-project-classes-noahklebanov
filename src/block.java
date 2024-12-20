@@ -1,6 +1,6 @@
 import processing.core.PApplet;
 
-public class Block {
+public class Block {  //this class communicates with Grid.java and App.java mainly uses this class(until shape class is implemented)
     private PApplet canvas;
     private int currentRow; //not indices
     private int currentCol; //not indices
@@ -70,7 +70,7 @@ public class Block {
         return mainGrid.getPermanentFillStatus(currentRow, currentCol);
     }
 
-    public boolean blockToTheRightFilled(){
+    public boolean blockToTheRightFilled(){ //used in method: boolean allBlocksCanShift(int direction)
         if(currentCol<this.cols-1){
             return mainGrid.getPermanentFillStatus(currentRow, currentCol+1);
         }else{
@@ -79,7 +79,7 @@ public class Block {
         
     }
 
-    public boolean blockToTheLeftFilled(){
+    public boolean blockToTheLeftFilled(){ //used in method: boolean allBlocksCanShift(int direction)
         if(currentCol>0){
             return mainGrid.getPermanentFillStatus(currentRow, currentCol-1);
         }else{
@@ -117,13 +117,13 @@ public class Block {
         }
     }
 
-    public boolean blockFreeToRotateLeft(){ //IMPLEMENT AFTER ALL REQUIREMENTS HIT
+    public boolean blockFreeToRotateLeft(){ //IMPLEMENT AFTER ALL REQUIREMENTS HIT(currently unused)
         
         return false;
 
     }
 
-    public boolean blockFreeToRotateRight(){ //IMPLEMENT AFTER ALL REQUIREMENTS HIT
+    public boolean blockFreeToRotateRight(){ //IMPLEMENT AFTER ALL REQUIREMENTS HIT(currently unused)
         return false;
         
     }
@@ -154,14 +154,14 @@ public class Block {
         
     }
 
-    public void moveLeft() { //in order for this to run, it has all ready been found that the block is free to move
+    public void moveLeft() { //in order for this to run, it has all ready been found that the block is free to move from method: boolean allBlocksCanShift(int direction)
         previousRow=currentRow;
         prevCol = currentCol;
         mainGrid.unFill(currentRow, prevCol);
         currentCol--;  
     }
 
-    public void moveRight() { //in order for this to run, it has all ready been found that the block is free to move
+    public void moveRight() { //in order for this to run, it has all ready been found that the block is free to move from method: boolean allBlocksCanShift(int direction)
         previousRow=currentRow;
         prevCol=currentCol;
         mainGrid.unFill(currentRow, prevCol);

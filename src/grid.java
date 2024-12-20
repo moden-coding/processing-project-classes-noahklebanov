@@ -2,10 +2,10 @@ import java.util.ArrayList;
 
 import processing.core.PApplet;
 
-public class Grid {
+public class Grid { //this class directly communicates with the cell class, telling each cell wether to be filled or unfilled
     private int rows;
     private int cols;
-    private Cell[][] gridArray;
+    private Cell[][] gridArray; //the maingrid referenced throughout this class is made of cells
     private PApplet canvas;
     private int score;
 
