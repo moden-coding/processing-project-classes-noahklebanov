@@ -34,7 +34,7 @@ public class App extends PApplet{
     }
 
     public void setup(){
-        startScreen = loadImage("startScreen2.png");
+        startScreen = loadImage("startScreen3.png");
         plainScreen = loadImage("plainScreen.png");
         playScreen = loadImage("playScreen.png");
         instructions = loadImage("instructions.png");
@@ -54,11 +54,20 @@ public class App extends PApplet{
             image(startScreen,0,0,800,600);
         }
 
-        else if(scene==0.1){  //called 1.1 as still apart of start
+        else if(scene==1){  //called 0.1 as still apart of start
             image(instructions,0,0,800,600);
         }
 
-        else if(scene==1){
+        else if(scene==2){
+            image(plainScreen,0,0,800,600);
+            textSize(30);
+            fill(0);
+            text("settings in progress", 100,315);
+
+        }
+
+
+        else if(scene==3){
             image(playScreen,0,0,800,600);
             textSize(30);
             fill(0);
@@ -74,13 +83,13 @@ public class App extends PApplet{
             mainGrid.clearFullRows();
             if(checkGameEnd()){
                 resetGame();
-                scene = 2;
+                scene = 4;
             }
             if(mainGrid.getScore()>highScore){
                 highScore=mainGrid.getScore();   
             }
         }
-        else if(scene==2){
+        else if(scene==4){
             image(endScreen,0,0,800,600);
             resetGame();
         }
@@ -94,7 +103,7 @@ public class App extends PApplet{
 
     }
 
-    public void readHighScore(){
+    public void readHighScore(){ //in setup()
         try (Scanner scanner = new Scanner(Paths.get("highScore.txt"))) {
 
             // we read the file until all lines have been read
@@ -109,7 +118,7 @@ public class App extends PApplet{
         
     }
 
-    public void saveHighScore(){
+    public void saveHighScore(){ //used in resetGame()
         try(PrintWriter writer = new PrintWriter("highScore.txt")){
             writer.println(highScore);
             writer.close();
@@ -239,28 +248,32 @@ public class App extends PApplet{
             }
         }
 
-        if(key=='r' && scene==2){
-            scene=1;
+        if(key=='r' && scene==4){
+            scene=3;
         }
 
     }
 //TO HERE will be  dramatically changed after the shape class is used
 
     public void mousePressed(){
-        if(mouseX>286 && mouseX<286+227 && mouseY>211 && mouseY<211+88 && scene==0){ //start button
-            scene=1;
-        }
-
-        if(mouseX>330 && mouseX<330+138 && mouseY>311 && mouseY<311+49 && scene==0){ //instructions
-            scene=0.1;
-        }
-
-        if(mouseX>700 && mouseX<700+79 && mouseY>10 && mouseY<10+75 && scene!=0){ //homeButton
-            if(scene == 1){
+        if(mouseX>700 && mouseX<700+79 && mouseY>10 && mouseY<10+75){ //homeButton
+            if(scene == 3){
                 resetGame();
             }
             scene=0;
             }
+
+        if(mouseX>286 && mouseX<286+227 && mouseY>211 && mouseY<211+88 && scene==0){ //start button
+            scene=3;
+        }
+
+        if(mouseX>330 && mouseX<330+138 && mouseY>311 && mouseY<311+49 && scene==0){ //instructions
+            scene=1;
+        }
+
+        if(mouseX>0 && mouseX<96 && mouseY>0 && mouseY<96 && scene==0){ //settings
+            scene=2;
+        }
 
     }
 
