@@ -50,15 +50,15 @@ public class App extends PApplet{
     }
 
     public void draw(){
-        if(scene==0){
+        if(scene==0){ //start screen
             image(startScreen,0,0,800,600);
         }
 
-        else if(scene==1){  //called 0.1 as still apart of start
+        else if(scene==1){  //instructions
             image(instructions,0,0,800,600);
         }
 
-        else if(scene==2){
+        else if(scene==2){ //settings
             image(plainScreen,0,0,800,600);
             textSize(30);
             fill(0);
@@ -66,22 +66,25 @@ public class App extends PApplet{
 
         }
 
+        else if(scene==3){ //gameplay
 
-        else if(scene==3){
             image(playScreen,0,0,800,600);
             textSize(30);
             fill(0);
             text(mainGrid.getScore(), 685,247);
             text(highScore, 685,335);
-            for(Block b: activeBlocks){   
+
+
+            for(Block b: activeBlocks){   //will be moved to Shapes.java
                 b.stoppedLogic();
                 b.displayBlock();
                 b.moveBlock();
             }
+
             mainGrid.drawGrid();
             makeBlocks();
             mainGrid.clearFullRows();
-            if(checkGameEnd()){
+            if(gameEnd()){
                 resetGame();
                 scene = 4;
             }
@@ -89,17 +92,18 @@ public class App extends PApplet{
                 highScore=mainGrid.getScore();   
             }
         }
-        else if(scene==4){
+
+        else if(scene==4){ //game over screen
             image(endScreen,0,0,800,600);
             resetGame();
         }
     }
 
-    public void resetGame(){
+    public void resetGame(){ //self explanatory
         mainGrid.clearAllRows();
         makeNewBlocks(); //to restart the posittion of the active blocks(the col in which the block appears is not random anymore)
         saveHighScore(); 
-        mainGrid.updateScore(0);
+        mainGrid.updateScore(0); //reseting the score to 0
 
     }
 
@@ -129,7 +133,7 @@ public class App extends PApplet{
         }
     }
 
-    public boolean checkGameEnd(){
+    public boolean gameEnd(){ //checking to see if one block has stopped they all stop
         for(Block b: activeBlocks){
             if(mainGrid.gameEnd(b.getCol())){
                 return true;
@@ -140,7 +144,7 @@ public class App extends PApplet{
     }
 
 //FROM HERE
-    public boolean allBlocksCanShift(int direction){
+    public boolean allBlocksCanShift(int direction){ //used for moving the block left and right
         //-1 is left and 1 is right
         boolean allBlocksFree = true;
         for(Block b: activeBlocks){
@@ -203,7 +207,7 @@ public class App extends PApplet{
     }
 
     public void keyPressed(){
-        if(keyCode==DOWN){
+        if(keyCode==DOWN){  //one problem is that the block still automatically moves down while key is pressed leading to the occasional visible bug
             for(Block b: activeBlocks){
                 b.moveDown();
             }  
@@ -232,6 +236,7 @@ public class App extends PApplet{
                     b.unFill();
                     b.rotate90left(centerRow,centerCol);
                     b.fill();
+
                 }
             }
         }
@@ -253,26 +258,37 @@ public class App extends PApplet{
         }
 
     }
-//TO HERE will be  dramatically changed after the shape class is used
+//TO HERE will be changed after the shape class is used
 
-    public void mousePressed(){
-        if(mouseX>700 && mouseX<700+79 && mouseY>10 && mouseY<10+75){ //homeButton
+    public boolean detectMouse(int mouseX, int mouseY, int x, int y, int width, int height){ //to clean up mousPressed() method a little
+        if(mouseX>x && mouseX<x+width && mouseY>y && mouseY<y+height){
+            return true;
+        }
+        return false;
+        
+    }
+
+    public void mousePressed(){   
+        if(detectMouse(mouseX,mouseY, 700, 10, 79, 75)){ //homeButton
             if(scene == 3){
                 resetGame();
             }
-            scene=0;
+            scene = 0;
             }
 
-        if(mouseX>286 && mouseX<286+227 && mouseY>211 && mouseY<211+88 && scene==0){ //start button
-            scene=3;
+         // Start button
+        if (detectMouse(mouseX, mouseY, 286, 211, 227, 88) && scene == 0) {
+            scene = 3;
         }
 
-        if(mouseX>330 && mouseX<330+138 && mouseY>311 && mouseY<311+49 && scene==0){ //instructions
-            scene=1;
+        // Instructions button
+        if (detectMouse(mouseX, mouseY, 330, 311, 138, 49) && scene == 0) {
+            scene = 1;
         }
 
-        if(mouseX>0 && mouseX<96 && mouseY>0 && mouseY<96 && scene==0){ //settings
-            scene=2;
+        // Settings button
+        if (detectMouse(mouseX, mouseY, 0, 0, 96, 96) && scene == 0) {
+            scene = 2;
         }
 
     }

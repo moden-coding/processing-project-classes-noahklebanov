@@ -8,7 +8,6 @@ public class Cell { //not aware of any class and only grid class calls this
     private int color;
     public boolean filled;
     public boolean permanentlyFilled;
-    public boolean resetFill; //to test
 
     public Cell(int sze, int xpos, int ypos, PApplet c){
         size=sze;
@@ -18,17 +17,16 @@ public class Cell { //not aware of any class and only grid class calls this
         color=canvas.color(0,0,0);
         filled=false;
         permanentlyFilled=false;
-        resetFill=false; //to test
     }
 
-    public void displayCell(){
+    public void displayCell(){ //draws a square with a color and position
         canvas.fill(color);
         canvas.stroke(0);
         canvas.rect(x,y,size,size);
         
     }
 
-    public void updateCell(){
+    public void updateCell(){ //checks fill status and determines the color of the cell based on this(in hindsight these fill statuses should be ints)
         if(filled && !permanentlyFilled){
             color=canvas.color(255,0,0);
         }else if(permanentlyFilled){
@@ -39,30 +37,25 @@ public class Cell { //not aware of any class and only grid class calls this
 
     }
 
-    public void temporaryFill(){
+    public void temporaryFill(){ //controls the boolean filled which is a temporary fill(red color)
         filled=true;
     }
 
-    public void unFillTemporary(){
+    public void unFillTemporary(){ //controls the boolean filled as well
         filled=false;
     }
 
-    public void permanentFill(){
+    public void permanentFill(){ //controls boolean permanentlyFilled(green color)
         permanentlyFilled=true;
     }
 
-    public void resetFill(){
+    public void resetFill(){ //used for clearing rows(after full row) and clearing the entire screen(reset or game end)
         permanentlyFilled=false;
         filled=false;
-        resetFill=true; //to test
     }
 
-    public boolean permanentFillStatus(){
+    public boolean permanentFillStatus(){ //used for clearing rows checking for stopped logic and for rotations and shifts left and right
         return permanentlyFilled;
-    }
-
-    public boolean wasFillReset(){
-        return resetFill;
     }
 
 }

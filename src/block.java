@@ -24,19 +24,19 @@ public class Block {  //this class communicates with Grid.java and App.java main
         
     }
     
-    public int getRow(){
+    public int getRow(){ //get method
         return currentRow;
     }   
 
-    public int getCol(){
+    public int getCol(){ //get method
         return currentCol;
     }
 
-    public void displayBlock() {
+    public void displayBlock() { //self explanatory
         mainGrid.fillCell(currentRow,currentCol);
     }
 
-    public void stoppedLogic(){
+    public void stoppedLogic(){ //combines the two methods below
         boolean onBlock = isOnStoppedBlock();
         boolean onBottom= isOnBottom();
         if(onBlock || onBottom){
@@ -44,14 +44,14 @@ public class Block {  //this class communicates with Grid.java and App.java main
         }
     }
         
-    public boolean isOnBottom(){
+    public boolean isOnBottom(){ //part of checking if the block should be stopped
         if(currentRow==this.rows-1){ 
             return true;
         }
         return false;
     }
 
-    public boolean isOnStoppedBlock() {
+    public boolean isOnStoppedBlock() { //part of checking if the block should be stopped
         int nextRow=currentRow+1;
         if(nextRow<20){
             if(mainGrid.getPermanentFillStatus(nextRow,currentCol)){
@@ -62,11 +62,11 @@ public class Block {  //this class communicates with Grid.java and App.java main
         return false;
     }
     
-    public void permanentlyFillBlock(){
+    public void permanentlyFillBlock(){ //used in stopped logic
         mainGrid.permanentlyFill(currentRow, currentCol);
     } 
     
-    public boolean permanentlyFilled(){
+    public boolean permanentlyFilled(){ //returns true if the block is filled false if not
         return mainGrid.getPermanentFillStatus(currentRow, currentCol);
     }
 
@@ -87,24 +87,20 @@ public class Block {  //this class communicates with Grid.java and App.java main
         }
     }
 
-    public boolean wasFillReset() {
-        return mainGrid.getResetFillStatus(currentRow, currentCol);
-    }
-
-    public void rotate90left(int centerRow, int centerCol){
+    public void rotate90left(int centerRow, int centerCol){ //does some math to rotate block around the center block
         int row = currentRow-centerRow;
         int col = currentCol-centerCol;
         int newRow=-col;
         int newCol=row;
         int testRow=newRow+centerRow;
         int testCol=newCol+centerCol;
-        if(testRow<this.rows && testRow>=0 && testCol<this.cols && testCol>=0){
+        if(testRow<this.rows && testRow>=0 && testCol<this.cols && testCol>=0){ //checking to see if the rotated position of the block is free 
             currentRow=testRow;
             currentCol=testCol;
         }
     }
 
-    public void rotate90right(int centerRow, int centerCol){
+    public void rotate90right(int centerRow, int centerCol){ //same as above just different direction
         int row = currentRow-centerRow;
         int col = currentCol-centerCol;
         int newRow=col;
@@ -117,26 +113,26 @@ public class Block {  //this class communicates with Grid.java and App.java main
         }
     }
 
-    public boolean blockFreeToRotateLeft(){ //IMPLEMENT AFTER ALL REQUIREMENTS HIT(currently unused)
+    public boolean blockFreeToRotateLeft(){ //IMPLEMENT AFTER ALL REQUIREMENTS HIT(currently unused becase the two methods above do the job of this method however this method would be better for multiple blocks)
         
         return false;
 
     }
 
-    public boolean blockFreeToRotateRight(){ //IMPLEMENT AFTER ALL REQUIREMENTS HIT(currently unused)
+    public boolean blockFreeToRotateRight(){ //IMPLEMENT AFTER ALL REQUIREMENTS HIT(currently unused becuase of reason above)
         return false;
         
     }
 
-    public void unFill(){
+    public void unFill(){ //simple function used in rotation to unfill the previos position of the rotated block
         mainGrid.unFill(currentRow,currentCol);
     }
 
-    public void fill(){
-        mainGrid.fillCell(currentRow, currentCol);
+    public void fill(){ //simple function used in rotate to fill the rotated position of the block
+        mainGrid.fillCell(currentRow, currentCol); 
     }
 
-    public void moveBlock(){
+    public void moveBlock(){ //this is done automatically every 45 frames(soft drop)
         frameCounter++;
         if(frameCounter%45==0 && currentRow<this.rows-1){ //every 45 frames the block automatically moves down one
             previousRow=currentRow; 
@@ -145,7 +141,7 @@ public class Block {  //this class communicates with Grid.java and App.java main
         }
     }
         
-    public void moveDown() {
+    public void moveDown() { //this is only done when the down key is pressed(hard drop)
         if(currentRow<this.rows-1){
             previousRow = currentRow;
             mainGrid.unFill(previousRow, currentCol);
