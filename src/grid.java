@@ -75,7 +75,7 @@ public class Grid { //this class directly communicates with the cell class, tell
         }
     }
 
-//methods from here down to line 103 just call cell methods as an inbetween between block and cell class
+//methods from here down to line 98 just call cell methods as an inbetween between block and cell class
     public void fillCell(int row, int col){
         gridArray[row][col].temporaryFill();
     }
@@ -94,10 +94,6 @@ public class Grid { //this class directly communicates with the cell class, tell
     public boolean getPermanentFillStatus(int row, int col){
         return gridArray[row][col].permanentFillStatus();
      
-    }
-
-    public boolean getResetFillStatus(int row, int col){
-        return gridArray[row][col].wasFillReset();
     }
 
     public void clearAllRows(){//for reseting game

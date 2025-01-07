@@ -10,7 +10,7 @@ public class App extends PApplet{
 
     int rows = 20; //later turn to user input
     int cols =10; //later turn to user input
-    Block activeBlock;
+    Block activeBlock; //activeBlock and centerBlock are essentially the same block
     Block activeBlock2;
     Block centerBlock;
     Grid mainGrid=new Grid(rows,cols, this);
